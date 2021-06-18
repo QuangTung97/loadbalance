@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package balance;
+
+option go_package = "balance/balancepb;balancepb";
+
+service BalanceService {
+  rpc Hello (HelloRequest) returns (HelloResponse);
+}
+
+message HelloRequest {
+  string name = 1;
+}
+
+message HelloResponse {
+  string msg = 1;
+}
