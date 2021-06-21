@@ -43,8 +43,9 @@ func main() {
 
 	pool, err := goblin.NewPoolServer(goblin.ServerConfig{
 		GRPCPort:     uint16(*port),
-		IsDynamicIPs: false,
-		StaticAddrs:  getAddresses(),
+		IsDynamicIPs: true,
+		ServiceAddr:  "goblin-server:5001",
+		DialOptions:  []grpc.DialOption{grpc.WithInsecure()},
 	}, goblin.WithServerLogger(logger))
 	if err != nil {
 		panic(err)

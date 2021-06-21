@@ -18,9 +18,7 @@ func main() {
 
 	pool := goblin.NewPoolClient(goblin.ClientConfig{
 		Addresses: []string{
-			"localhost:5001",
-			"localhost:5002",
-			"localhost:5003",
+			"goblin-server:5001",
 		},
 		Options: []grpc.DialOption{
 			grpc.WithInsecure(),

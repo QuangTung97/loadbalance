@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: goblin-server 
+  labels:
+    app: goblin-server
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: goblin-server
+  template:
+    metadata:
+      labels:
+        app: goblin-server
+    spec:
+      containers:
+      - name: goblin-server
+        image: "quangtung97/loadbalance"
+        command: ["./server"]
+        resources:
+          requests:
+            cpu: 100m
+            memory: 200Mi
+        ports:
+        - containerPort: 5001
+          protocol: TCP
+        - containerPort: 7001
+          protocol: TCP
+        - containerPort: 7001
+          protocol: UDP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: goblin-server
+  labels:
+    app: goblin-server
+spec:
+  ports:
+  - port: 5001
+    targetPort: 5001
+  selector:
+    app: goblin-server
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: goblin-client 
+  labels:
+    app: goblin-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: goblin-client
+  template:
+    metadata:
+      labels:
+        app: goblin-client
+    spec:
+      containers:
+      - name: goblin-client
+        image: "quangtung97/loadbalance"
+        command: ["./client"]
+        resources:
+          requests:
+            cpu: 100m
+            memory: 200Mi
