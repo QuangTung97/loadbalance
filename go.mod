@@ -3,7 +3,7 @@ module balance
 go 1.16
 
 require (
-	github.com/QuangTung97/goblin v0.0.0-20210621080407-90d8ccd6881e
+	github.com/QuangTung97/goblin v0.1.0
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0
 	go.uber.org/atomic v1.8.0 // indirect
 	go.uber.org/multierr v1.7.0 // indirect
