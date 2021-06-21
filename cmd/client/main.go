@@ -5,11 +5,17 @@ import (
 	"context"
 	"fmt"
 	"github.com/QuangTung97/goblin"
+	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"time"
 )
 
 func main() {
+	logger, err := zap.NewDevelopment()
+	if err != nil {
+		panic(err)
+	}
+
 	pool := goblin.NewPoolClient(goblin.ClientConfig{
 		Addresses: []string{
 			"localhost:5001",
@@ -19,9 +25,11 @@ func main() {
 		Options: []grpc.DialOption{
 			grpc.WithInsecure(),
 		},
-	})
+	}, goblin.WithClientLogger(logger))
 
-	time.Sleep(1 * time.Second)
+	for !pool.Ready() {
+		time.Sleep(100 * time.Millisecond)
+	}
 
 	for {
 		err := pool.GetConn(func(conn *grpc.ClientConn) error {

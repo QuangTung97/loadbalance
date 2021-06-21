@@ -69,7 +69,7 @@ func main() {
 	go func() {
 		defer wg.Done()
 
-		listener, err := net.Listen("tcp", fmt.Sprintf(":%d", *port-2000))
+		listener, err := net.Listen("tcp", fmt.Sprintf(":%d", *port))
 		if err != nil {
 			panic(err)
 		}
