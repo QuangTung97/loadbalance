@@ -18,7 +18,7 @@ import (
 	"syscall"
 )
 
-var port = flag.Int("port", 7001, "port of memberlist")
+var port = flag.Int("port", 5001, "port of grpc")
 
 var nodes = flag.String("nodes", "", "the nodes in cluster")
 
@@ -36,16 +36,16 @@ func getAddresses() []string {
 func main() {
 	flag.Parse()
 
-	pool, err := goblin.NewPoolServer(goblin.Config{
-		MemberlistBindPort: uint16(*port),
-		IsDynamicIPs:       false,
-		StaticAddrs:        getAddresses(),
-	})
+	logger, err := zap.NewDevelopment()
 	if err != nil {
 		panic(err)
 	}
 
-	logger, err := zap.NewDevelopment()
+	pool, err := goblin.NewPoolServer(goblin.ServerConfig{
+		GRPCPort:     uint16(*port),
+		IsDynamicIPs: false,
+		StaticAddrs:  getAddresses(),
+	}, goblin.WithServerLogger(logger))
 	if err != nil {
 		panic(err)
 	}
